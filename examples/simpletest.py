@@ -27,7 +27,7 @@
 import time
 
 import Adafruit_MCP9808.MCP9808 as MCP9808
-
+from datetime import datetime
 
 # Define a function to convert celsius to fahrenheit.
 def c_to_f(c):
@@ -50,8 +50,10 @@ sensor = MCP9808.MCP9808()
 sensor.begin()
 
 # Loop printing measurements every second.
-print('Press Ctrl-C to quit.')
+#print('Press Ctrl-C to quit.')
 while True:
+	str_time = str(datetime.now())
 	temp = sensor.readTempC()
-	print('Temperature: {0:0.3F}*C / {1:0.3F}*F'.format(temp, c_to_f(temp)))
-	time.sleep(1.0)
+	#print('Temperature: {0:0.3F}*C / {1:0.3F}*F'.format(temp, c_to_f(temp)))
+	print(str_time + "," + str(temp))
+	time.sleep(300)
