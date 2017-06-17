@@ -25,6 +25,7 @@
 #logging.basicConfig(level=logging.DEBUG)
 
 import time
+import MySQLdb
 
 import Adafruit_MCP9808.MCP9808 as MCP9808
 from datetime import datetime
@@ -49,6 +50,12 @@ sensor = MCP9808.MCP9808()
 # Initialize communication with the sensor.
 sensor.begin()
 
+# Db init 
+
+
+db = MySQLdb.connect("glapeira.freeboxos.fr", "cedric", "cedb002", "TempRPIZero01")        # name of the data base
+cur = db.cursor()
+
 # Loop printing measurements every second.
 #print('Press Ctrl-C to quit.')
 while True:
@@ -56,4 +63,8 @@ while True:
 	temp = sensor.readTempC()
 	#print('Temperature: {0:0.3F}*C / {1:0.3F}*F'.format(temp, c_to_f(temp)))
 	print(str_time + "," + str(temp))
-	time.sleep(300)
+        cur.execute('''INSERT into Temp (TimeStamp, Temp)
+                                  values (%s, %d)''',
+                                                    (str_time, temp))
+        db.commit()
+        time.sleep(300)
