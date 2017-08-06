@@ -21,50 +21,57 @@
 # THE SOFTWARE.
 
 # Can enable debug output by uncommenting:
-#import logging
-#logging.basicConfig(level=logging.DEBUG)
+# import logging
+# logging.basicConfig(level=logging.DEBUG)
 
 import time
-import MySQLdb
+# import MySQLdb
 
 import Adafruit_MCP9808.MCP9808 as MCP9808
 from datetime import datetime
 
 # Define a function to convert celsius to fahrenheit.
-def c_to_f(c):
-	return c * 9.0 / 5.0 + 32.0
 
-# Default constructor will use the default I2C address (0x18) and pick a default I2C bus.
+
+def c_to_f(c):
+    return c * 9.0 / 5.0 + 32.0
+
+# Default constructor will use the default I2C address (0x18) and pick a
+# default I2C bus.
 #
-# For the Raspberry Pi this means you should hook up to the only exposed I2C bus
-# from the main GPIO header and the library will figure out the bus number based
-# on the Pi's revision.
+# For the Raspberry Pi this means you should hook up to the only exposed I2C
+# bus
+# from the main GPIO header and the library will figure out the bus number
+# basedi on the Pi's revision.
 #
 # For the Beaglebone Black the library will assume bus 1 by default, which is
 # exposed with SCL = P9_19 and SDA = P9_20.
+
+
 sensor = MCP9808.MCP9808()
 
 # Optionally you can override the address and/or bus number:
-#sensor = MCP9808.MCP9808(address=0x20, busnum=2)
+# sensor = MCP9808.MCP9808(address=0x20, busnum=2)
 
 # Initialize communication with the sensor.
 sensor.begin()
 
-# Db init 
+# Db init
 
 
-db = MySQLdb.connect("glapeira.freeboxos.fr", "cedric", "cedb002", "TempRPIZero01")        # name of the data base
-cur = db.cursor()
+# db = MySQLdb.connect("glapeira.freeboxos.fr", "root", "cedb002",
+# "TempRPIZero01")
+# cur = db.cursor()
 
 # Loop printing measurements every second.
-#print('Press Ctrl-C to quit.')
+#  print('Press Ctrl-C to quit.')
 while True:
-	str_time = str(datetime.now())
-	temp = sensor.readTempC()
-	#print('Temperature: {0:0.3F}*C / {1:0.3F}*F'.format(temp, c_to_f(temp)))
-	print(str_time + "," + str(temp))
-        cur.execute('''INSERT into Temp (TimeStamp, Temp)
-                                  values (%s, %d)''',
-                                                    (str_time, temp))
-        db.commit()
-        time.sleep(300)
+    str_time = str(datetime.now())
+    temp = sensor.readTempC()
+    # print('Temperature: {0:0.3F}*C / {1:0.3F}*F'.format(temp, c_to_f(temp)))
+    print(str_time + "," + str(temp))
+    # cur.execute('''INSERT into Temp (TimeStamp, Temp) values (%s, %d)''',
+    #                                            (str_time, temp))
+    # db.commit()
+    print(temp)
+    time.sleep(0.5)

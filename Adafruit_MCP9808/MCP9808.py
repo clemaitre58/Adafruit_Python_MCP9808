@@ -65,7 +65,7 @@ class MCP9808(object):
 
 
 	def begin(self):
-		"""Start taking temperature measurements. Returns True if the device is 
+		"""Start taking temperature measurements. Returns True if the device is
 		intialized, False otherwise.
 		"""
 		# Check manufacturer and device ID match expected values.
